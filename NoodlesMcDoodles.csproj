@@ -1,0 +1,89 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- One DLL for server and client. Compiled against the CLIENT reference set (libs-Tools/1.0/client);
+       every build must also pass libs-Tools/refcheck against the installed SERVER Managed folder, because the
+       two game assemblies differ (client 25527674, server 25527701). Sources live under src/<Module>/;
+       probe/ and tools/ are separate projects and are excluded below. -->
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>12</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>false</ImplicitUsings>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <AssemblyName>NoodlesMcDoodles</AssemblyName>
+    <RootNamespace>NoodlesMcDoodles</RootNamespace>
+    <Version>1.1.0</Version>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <Deterministic>true</Deterministic>
+    <Optimize>true</Optimize>
+    <DebugType>portable</DebugType>
+    <OutputPath>bin/</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="src/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1" PrivateAssets="all" />
+
+    <Reference Include="BepInEx">
+      <HintPath>..\libs-Tools\BepInEx.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>..\libs-Tools\0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="assembly_valheim">
+      <HintPath>..\libs-Tools\1.0\client\assembly_valheim.dll</HintPath>
+      <Publicize>true</Publicize>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="assembly_utils">
+      <HintPath>..\libs-Tools\1.0\client\assembly_utils.dll</HintPath>
+      <Publicize>true</Publicize>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Splatform">
+      <HintPath>..\libs-Tools\1.0\client\Splatform.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="steamworks.net">
+      <HintPath>..\libs-Tools\1.0\client\steamworks.net.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\libs-Tools\1.0\client\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\libs-Tools\1.0\client\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>..\libs-Tools\1.0\client\UnityEngine.PhysicsModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- Added for src/Overlay/ (OVERLAY SPEC): the F6 status panel is IMGUI (OnGUI/GUIStyle/GUILayout), the
+         same three extra modules probe/NoodlesProbe.csproj already references for its own OnGUI panel and
+         KeyboardShortcut config key. Reference-only (no Publicize, no Private) like every other UnityEngine.*
+         module above; nothing else in this project used IMGUI before, so these were never needed until now. -->
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>..\libs-Tools\1.0\client\UnityEngine.InputLegacyModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>..\libs-Tools\1.0\client\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>..\libs-Tools\1.0\client\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

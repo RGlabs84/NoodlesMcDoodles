@@ -1,0 +1,8 @@
+<Project>
+  <!-- Builds run under `flock <scratchpad>/noodles-build.lock` so parallel agents don't collide. A shared compiler
+       server (VBCSCompiler) started by such a build inherits the lock's file descriptor and keeps the lock held
+       after the build ends (seen 2026-09-28: every build blocked for 20+ minutes). Compile in-process instead. -->
+  <PropertyGroup>
+    <UseSharedCompilation>false</UseSharedCompilation>
+  </PropertyGroup>
+</Project>

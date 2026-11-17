@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Test harness for src/Core/Config (the config schema migrator). Compiles ONLY those pure-C# files (no Unity,
+       BepInEx or Harmony), so it runs anywhere; usage is at the top of Program.cs. Exits non-zero if any check
+       fails. The mod's own csproj only compiles src/**, so nothing here leaks into the mod. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>CfgMigrateTest</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../src/Core/Config/*.cs" Link="Linked/%(Filename)%(Extension)" />
+  </ItemGroup>
+</Project>

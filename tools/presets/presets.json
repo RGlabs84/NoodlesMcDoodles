@@ -1,0 +1,101 @@
+{
+  "_comment": "Test-stage presets for NoodlesMcDoodles. Keys are 'Section/Key' exactly as in wubarrk.noodlesmcdoodles.cfg. A preset lists every switch it sets, so applying one always gives the same state regardless of what was there before. Server presets go on the server's config; client presets on a player's own Gale profile config. Stages build on each other: switch on one step at a time. Order for a test: vanilla, m1, guards, o9, compression; zones and gameplay are held back until the server-held zone geometry is settled.",
+  "server": {
+    "vanilla": {
+      "about": "Mod loaded but fully off: vanilla behaviour, for an A/B baseline.",
+      "set": {
+        "Core/Enabled": "false"
+      }
+    },
+    "m1": {
+      "about": "Default generated config: adaptive send rates and send-queue tuning on; every server-authority feature off.",
+      "set": {
+        "Core/Enabled": "true",
+        "Features/ServerZoneSim.Active": "false",
+        "OwnershipAuthority/Active": "false",
+        "O9/Active": "false",
+        "Features/VehicleContainerHandover.Active": "false",
+        "Features/ProductionHandoverGuard.Active": "false",
+        "Features/StructureHandoverGuard.Active": "false",
+        "Features/ServerSpawning.Active": "false",
+        "Features/ServerCombatStats.Active": "false",
+        "Features/HeadlessBiomeWind.Active": "false",
+        "Features/DoorAutoClose.Active": "false",
+        "Features/ZdoCompression.Active": "false"
+      }
+    },
+    "guards": {
+      "about": "m1 + the in-use guards: the server refuses to move a container, cart, saddle, ship, smelter or creature that is in use. On their own they change nothing; O9 needs them.",
+      "inherits": "m1",
+      "set": {
+        "Features/VehicleContainerHandover.Active": "true",
+        "Features/ProductionHandoverGuard.Active": "true"
+      }
+    },
+    "o9": {
+      "about": "guards + latency-aware ownership: an object near several players moves to whichever of them has the lowest ping (never a building piece, ship, cart or terrain).",
+      "inherits": "guards",
+      "set": {
+        "O9/Active": "true"
+      }
+    },
+    "compression": {
+      "about": "o9 + compressed world-data sync to players whose client runs the mod (vanilla clients keep plain sync).",
+      "inherits": "o9",
+      "set": {
+        "Features/ZdoCompression.Active": "true"
+      }
+    },
+    "zones": {
+      "about": "HELD BACK (inert at default geometry, see docs/impl/INTEGRATION-REVIEW.md OPEN): compression + the server holds and simulates zones no player is standing in.",
+      "inherits": "compression",
+      "set": {
+        "Features/ServerZoneSim.Active": "true",
+        "OwnershipAuthority/Active": "true"
+      }
+    },
+    "gameplay": {
+      "about": "HELD BACK with zones: zones + the server running spawning, wind/biome and combat-stat credit in the zones it holds.",
+      "inherits": "zones",
+      "set": {
+        "Features/ServerSpawning.Active": "true",
+        "Features/HeadlessBiomeWind.Active": "true",
+        "Features/ServerCombatStats.Active": "true"
+      }
+    }
+  },
+  "client": {
+    "client-default": {
+      "about": "Default client config (0.1.1): upload help (Q10) and the shorter extrapolation cap are on.",
+      "set": {
+        "Core/Enabled": "true",
+        "Transport/Q10_Enabled": "true",
+        "ClientSmoothing/Active": "false",
+        "ClientSmoothing/ShortExtrapolation.Active": "true"
+      }
+    },
+    "client-off": {
+      "about": "Client install changes nothing: upload help and the shorter extrapolation cap both off (vanilla client behaviour).",
+      "set": {
+        "Core/Enabled": "true",
+        "Transport/Q10_Enabled": "false",
+        "ClientSmoothing/Active": "false",
+        "ClientSmoothing/ShortExtrapolation.Active": "false"
+      }
+    },
+    "client-upload": {
+      "about": "Only upload help (Q10): this game's upload follows the same adaptive rate as the server.",
+      "inherits": "client-off",
+      "set": {
+        "Transport/Q10_Enabled": "true"
+      }
+    },
+    "client-smooth": {
+      "about": "Only the shorter extrapolation cap: when updates stall, others stop being guessed forward after 0.5 s instead of 2 s.",
+      "inherits": "client-off",
+      "set": {
+        "ClientSmoothing/ShortExtrapolation.Active": "true"
+      }
+    }
+  }
+}

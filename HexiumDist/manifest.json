@@ -1,0 +1,9 @@
+{
+    "name": "NoodlesMcDoodles",
+    "version_number": "1.1.0",
+    "website_url": "https://www.rossgilsonlabs.dev",
+    "description": "Take the desync out of Valheim. Your dedicated server runs the world instead of whichever player got there first, and far-away players get the bandwidth they need. Less rubber-banding, same vanilla game. Works with vanilla clients.",
+    "dependencies": [
+        "denikson-BepInExPack_Valheim-5.4.2360"
+    ]
+}
